@@ -10,6 +10,8 @@ Game
 
 
 Settings
+-Music? toggle
+-Sound effect toggle
 -Animation Speed
 -Apply button
 -Pickable tile glow
