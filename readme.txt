@@ -7,6 +7,9 @@ Game
 -Quit
 -Restart
 -Tiles fly over to their place in the mat.
+-Clearly mark which buttons will remove progress
+-When win prompt name to write to scoreboard
+--3 letters?
 
 
 Settings
@@ -31,3 +34,5 @@ scoreboard
 -Board
 -Hints used
 -Maybe hints disqualify for scoreboard
+
+Info page

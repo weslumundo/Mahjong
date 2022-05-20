@@ -1,0 +1,25 @@
+.logo{
+    margin: auto;
+    margin-top: 8vmin;
+}
+
+.im{
+    margin: auto;
+    height: auto;
+    max-width: 100%;
+    width: 125vmin;
+    display: block;
+    border-style: solid;
+    padding-right: 5vmin;
+    padding-left: 5vmin;
+    padding-top: 5vmin;
+    padding-bottom: 5vmin;
+    border-color: sienna;
+    border-width: 1vmin;
+    background-color: green;
+}
+
+body{
+    /*background-color:lightslategray;*/
+    background-color: burlywood;
+}
