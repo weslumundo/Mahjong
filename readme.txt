@@ -41,6 +41,9 @@ Info page
 Known Errors
 --Logo does not properly scale horozontally 
 
---Not a bug but the taskbar hides part of the physical screen which 
--to apparent changes in perspective due to screen size change, but its
--actually working fine
+--Full screen will have wasted space with current implimentation
+
+
+Things to fix
+--Change default font size of buttons on home page
+--Add button to all pages to return to home page
