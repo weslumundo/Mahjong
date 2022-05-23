@@ -1,25 +1,78 @@
 .logo{
     margin: auto;
-    margin-top: 8vmin;
+    margin-top: 6vh;
+    margin-bottom: 0vh;
 }
 
 .im{
     margin: auto;
-    height: auto;
-    max-width: 100%;
-    width: 125vmin;
+    height: 15.84vw;
+    max-width: 100vw;
+    width: 65vw;
     display: block;
     border-style: solid;
-    padding-right: 5vmin;
-    padding-left: 5vmin;
-    padding-top: 5vmin;
-    padding-bottom: 5vmin;
+    padding-right: 5vw;
+    padding-left: 5vw;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
     border-color: sienna;
-    border-width: 1vmin;
+    border-width: 100%;
     background-color: green;
 }
 
 body{
     /*background-color:lightslategray;*/
     background-color: burlywood;
+    margin: 0px;
+}
+
+.buttons{
+    margin: 0vmin;
+    padding: 0vmin;
+    /*margin-top: 15vh;*/
+}
+
+.buttons{
+    margin-top: 10vh;
+    margin-bottom: 8vh;
+}
+
+.but{
+    padding: 0vmin;
+    width: 12vw;
+    height: 9vw;
+}
+
+.but2{
+    padding: 0vmin;
+    width: 4vw;
+    height: 3vw;
+    display: block;
+    margin: 0px auto;
+}
+
+#b1{
+    margin-left: 21vw;
+}
+
+#b2{
+    margin-left:11vw;
+}
+
+button{
+    color: ivory;
+    background-color: green;
+    border: solid sienna;
+}
+
+#toobright:hover{
+    color: whitesmoke;
+    background-color: lightgreen;
+    border: solid wheat;
+}
+
+button:hover{
+    color: black;
+    background-color: lawngreen;
+    border: solid darkgreen;    
 }

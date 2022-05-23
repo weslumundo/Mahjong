@@ -36,3 +36,11 @@ scoreboard
 -Maybe hints disqualify for scoreboard
 
 Info page
+
+
+Known Errors
+--Logo does not properly scale horozontally 
+
+--Not a bug but the taskbar hides part of the physical screen which 
+-to apparent changes in perspective due to screen size change, but its
+-actually working fine
