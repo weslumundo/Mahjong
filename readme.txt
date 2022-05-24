@@ -10,9 +10,15 @@ Game
 -Clearly mark which buttons will remove progress
 -When win prompt name to write to scoreboard
 --3 letters?
+-board layout Change
+--starts with default chosen in settings
+--arrow clicks or dropdown
 
 
 Settings
+-several different profiles
+-lock after changes for a few days?
+--stretch goal to make txt method usable with larger player base
 -Music? toggle
 -Sound effect toggle
 -Animation Speed
@@ -29,6 +35,8 @@ Settings
 --App?
 --Custom?
 -Background color.
+-information like tiles left and avalible matches
+-default board
 
 scoreboard
 -Board
@@ -45,5 +53,18 @@ Known Errors
 
 
 Things to fix
+-mindex
 --Change default font size of buttons on home page
 --Add button to all pages to return to home page
+
+-game
+--test readout needs to be spaced properly
+
+Stretch goal
+--dev page for board building
+---click on board to place tiles, maybe in checkers style, apply to output to txt file
+---outputs text easy to copy and paste into game.html
+
+Understand
+--document.body.style = "white-space: pre;"; //game.js
+--onclick="window.location.href='score/score.html';" //mindex.html
