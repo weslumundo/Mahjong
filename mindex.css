@@ -15,7 +15,7 @@
     padding-left: 5vw;
     padding-top: 5vh;
     padding-bottom: 5vh;
-    border-color: sienna;
+    border-color: darkred;
     border-width: 100%;
     background-color: green;
 }
@@ -62,7 +62,7 @@ body{
 button{
     color: ivory;
     background-color: green;
-    border: solid sienna;
+    border: solid darkred;
 }
 
 #toobright:hover{

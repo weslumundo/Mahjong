@@ -59,6 +59,7 @@ Things to fix
 
 -game
 --test readout needs to be spaced properly
+--buttons need hooked up to style system
 
 Stretch goal
 --dev page for board building

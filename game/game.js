@@ -188,17 +188,27 @@ if(true){//turtle tester
     placeTile(7.5,4.5,5);
 }
 
+//color stylization
+// ************************************************
+if(true){
+    cnv.style.backgroundColor= 'green';
+    cnv.style.borderColor='darkred';
+    document.body.style.backgroundColor='burlywood';
+}
 
 // ************************************************
 //edit the canvas to be the correct size
-//cnv.width=window.innerWidth;
-//cnv.height=window.innerHeight;
+var scale=0.6;
+cnv.width=window.innerWidth*scale;
+cnv.height=window.innerWidth*scale*0.6;
 
+//change color
+//background?
 
 
 //testing
 
-
+/*
 //lets output marray onto a blank html page
 let myDiv = document.createElement("div");
 let myP = document.createElement("p");
@@ -217,3 +227,4 @@ myP.appendChild(myTxt);
 myDiv.appendChild(myP);
 document.body.appendChild(myDiv);
 document.body.style = "white-space: pre;";
+*/

@@ -1,0 +1,53 @@
+.buttons{
+    margin: 0;
+    margin-top: 5vh;
+}
+
+div{
+    margin: 0;
+}
+
+body{
+    margin: 0;
+    background-color: burlywood;
+}
+
+p{
+    margin-left: 5px;
+}
+
+#bt1{
+    margin-left: 31.4vw;
+}
+
+#bt2{
+    margin-left: 3vw;
+}
+
+.but{
+    height: 3.75vw;
+    width: 5vw;
+}
+
+canvas{
+    border: solid 0.5vw darkred;
+    margin: auto;
+    display: block;
+    background-color: green;
+}
+
+.cnvDiv{
+    margin-top: 3vh;
+}
+
+button{
+    color: ivory;
+    background-color: green;
+    border: solid darkred;
+}
+
+button:hover{
+    color: black;
+    background-color: lawngreen;
+    border: solid darkgreen;    
+}
