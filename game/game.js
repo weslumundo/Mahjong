@@ -17,7 +17,9 @@ xoffset =0;//for tile resizing
 yoffset =0;
 var blank = new Image(); // Create new img element
 var scale=0.6;//canvas scale % of vw
-blank.src = "../images/blankTileClean.png"; 
+blank.src = "../images/blankTileClean.png";
+var imageUrlArray = []; 
+var imageArray = [];
 
 // ****************************************
 //function delcaration
@@ -146,109 +148,157 @@ function cnvScale(){
     }
 }
 
-//For the tile array, I need
-//An array, with arrays = layers, with arrays = col, with arrays = row
-//change this to array=layers, array=rows, elements= columns
-// ****************************************
-//Here is where I will import all settings, for know just use the 'default' values
+//https://stackoverflow.com/questions/37854355/wait-for-image-loading-to-complete-in-javascript
+async function loadImages(imageUrlArray) {
+    const promiseArray = []; // create an array for promises
+    const imageArray = []; // array for the images
 
-//Board type
-//Turtle
-//12
-//8, 6
-//10, 6, 4
-//12, 6, 4, 2
-//  1 2, , , ,1
-//12, 6, 4, 2
-//10, 6, 4
-//8, 6
-//12
-//total size 
-//5x15x9
-//but, I need a vertical inbetween and a horizontal inbetween.
-//z can stay quantum
-//I think I can get away with just using 0.5 units for horizontal and vertical
-//so 5x29x17
-//size for x and y = width*2-1 in most cases, I guess it doesnt matter and we just need a case by case basis
-if(true)//condition for turtle
-{
-   height=5;
-   rowNum=15;
-   rowLen=29; 
+    for (let imageUrl of imageUrlArray) {
+
+        promiseArray.push(new Promise(resolve => {
+
+            const img = new Image();
+            // if you don't need to do anything when the image loads,
+            // then you can just write img.onload = resolve;
+
+            img.onload = function() {
+                // do stuff with the image if necessary
+
+                // resolve the promise, indicating that the image has been loaded
+                resolve();
+            };
+
+            img.src = imageUrl;
+            imageArray.push(img);
+        }));
+    }
+
+    await Promise.all(promiseArray); // wait for all the images to be loaded
+    console.log("all images loaded");
+    return imageArray;
 }
 
-// ********************************************
-//create properly sized marray and fill with 0s
+function buildArray(){
+    //For the tile array, I need
+    //An array, with arrays = layers, with arrays = col, with arrays = row
+    //change this to array=layers, array=rows, elements= columns
+    // ****************************************
+    //Here is where I will import all settings, for know just use the 'default' values
 
-for (let i=0; i<height; i++){
-    marray.push(new Array());
-    for(let j=0; j<rowNum;j++){
-        marray[i].push(new Array());
-        for(let z=0; z<rowLen; z++){
-            marray[i][j].push(0);
+    //Board type
+    //Turtle
+    //12
+    //8, 6
+    //10, 6, 4
+    //12, 6, 4, 2
+    //  1 2, , , ,1
+    //12, 6, 4, 2
+    //10, 6, 4
+    //8, 6
+    //12
+    //total size 
+    //5x15x9
+    //but, I need a vertical inbetween and a horizontal inbetween.
+    //z can stay quantum
+    //I think I can get away with just using 0.5 units for horizontal and vertical
+    //so 5x29x17
+    //size for x and y = width*2-1 in most cases, I guess it doesnt matter and we just need a case by case basis
+    if(true)//condition for turtle
+    {
+       height=5;
+       rowNum=15;
+       rowLen=29; 
+    }
+
+    // ********************************************
+    //create properly sized marray and fill with 0s
+
+    for (let i=0; i<height; i++){
+        marray.push(new Array());
+        for(let j=0; j<rowNum;j++){
+            marray[i].push(new Array());
+            for(let z=0; z<rowLen; z++){
+                marray[i][j].push(0);
+            }
         }
     }
-}
 
-// *********************************************
-//fill chart with ? and x denoting tiles and invalid tile placements(the half space between tiles)
-if(true){//turtle tester
-    //this is hell, remember that you are smarter than this
-    /*
-    marray[0][0]=[0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0];
-    marray[0][1]=[0,'x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',0,0,0,0];
-    marray[0][2]=[0,0,0,0,0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0,0,0,0,0];
-    marray[0][3]=[0,0,0,'x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',0,0,0,0,0,0];
-    marray[0][4]=[0,0,0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0,0,0];
-    */
+    // *********************************************
+    //fill chart with ? and x denoting tiles and invalid tile placements(the half space between tiles)
+    if(true){//turtle tester
+        //this is hell, remember that you are smarter than this
+        /*
+        marray[0][0]=[0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0];
+        marray[0][1]=[0,'x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',0,0,0,0];
+        marray[0][2]=[0,0,0,0,0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0,0,0,0,0];
+        marray[0][3]=[0,0,0,'x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',0,0,0,0,0,0];
+        marray[0][4]=[0,0,0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0,0,0];
+        */
 
-    /*
-    //I can automate this further
-    for(let i=0;i<12;i++){
-        placeTile(2+i,1,1);
+        /*
+        //I can automate this further
+        for(let i=0;i<12;i++){
+            placeTile(2+i,1,1);
+        }
+        for(let i=0;i<8;i++){
+            placeTile(4+i,2,1);
+        }
+        */
+
+        placeLine(2,1,1,12);
+        placeBlock(4,2,1,8,6);
+        placeBlock(3,3,1,10,4);
+        placeBlock(2,4,1,12,2);
+        placeTile(1,4.5,1);
+        placeLine(14,4.5,1,2);
+        placeLine(2,8,1,12);
+        placeBlock(5,2,2,6,6);
+        placeBlock(6,3,3,4,4);
+        placeBlock(7,4,4,2,2);
+        placeTile(7.5,4.5,5);
     }
-    for(let i=0;i<8;i++){
-        placeTile(4+i,2,1);
+}
+
+async function setStyle(){
+    // ************************************************
+    //color stylization
+    if(true){
+        cnv.style.backgroundColor= 'green';
+        cnv.style.borderColor='darkred';
+        document.body.style.backgroundColor='burlywood';
     }
-    */
 
-    placeLine(2,1,1,12);
-    placeBlock(4,2,1,8,6);
-    placeBlock(3,3,1,10,4);
-    placeBlock(2,4,1,12,2);
-    placeTile(1,4.5,1);
-    placeLine(14,4.5,1,2);
-    placeLine(2,8,1,12);
-    placeBlock(5,2,2,6,6);
-    placeBlock(6,3,3,4,4);
-    placeBlock(7,4,4,2,2);
-    placeTile(7.5,4.5,5);
+    // ************************************************
+    //tile stylization
+    if(true){
+        imageUrlArray.push("../images/blankTileClean.png");
+        //console.log("start");
+        //console.log("beginning test");
+        imageArray = await loadImages(imageUrlArray);
+        //console.log("ending test");
+    }
 }
-
-
-cnvScale();
-// ************************************************
-//color stylization
-if(true){
-    cnv.style.backgroundColor= 'green';
-    cnv.style.borderColor='darkred';
-    document.body.style.backgroundColor='burlywood';
-}
-
-// ************************************************
-//lets plot one tile on the canvas
-
-var ctx = cnv.getContext("2d");
-var img = document.getElementById("blank");
-//ctx.drawImage(img,0,0,150,180);
-
-// ************************************************
-//console.log(img,xoffset+(2*cws),yoffset+chs,cws,chs);
-//ctx.drawImage(img,(2*cws),chs,cws,chs);
-ctx.drawImage(img,xoffset+(2*cws),yoffset+chs,cws,chs);
 
 // *************************************************
 //I need to read the marray and plot tiles for each ?/tile id
+
+
+// *************************************************
+//This is where I will start actually calling things
+
+async function main(){
+    buildArray();
+    await setStyle();
+    cnvScale();
+    
+    // ************************************************
+    //lets plot one tile on the canvas
+    var ctx = cnv.getContext("2d");
+    var img = imageArray[0];
+    //console.log(img);
+    //ctx.drawImage(img,0,0,150,180);
+    ctx.drawImage(img,xoffset+(2*cws),yoffset+chs,cws,chs);
+}
 
 //testing
 

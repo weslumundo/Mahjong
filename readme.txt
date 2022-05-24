@@ -62,6 +62,7 @@ Things to fix
 --buttons need hooked up to style system
 --need to find a way to source canvas images
 --The canvas scale prioritizer isn't choosing the correct scale
+--Single tile on canvas online, likely because of image loading problems
 
 Stretch goal
 --dev page for board building
@@ -71,3 +72,4 @@ Stretch goal
 Understand
 --document.body.style = "white-space: pre;"; //game.js
 --onclick="window.location.href='score/score.html';" //mindex.html
+--imageLoad //game.js
