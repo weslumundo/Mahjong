@@ -60,6 +60,8 @@ Things to fix
 -game
 --test readout needs to be spaced properly
 --buttons need hooked up to style system
+--need to find a way to source canvas images
+--The canvas scale prioritizer isn't choosing the correct scale
 
 Stretch goal
 --dev page for board building

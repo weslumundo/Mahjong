@@ -5,10 +5,19 @@
 // ***************************************
 //variable declaration
 const marray = [];
-var rowLen=0;//y
-var rowNum=0;//x
+var rowLen=0;//x
+var rowNum=0;//y
 var height=0;//z
 var cnv=document.getElementById("myCanvas");
+cw =0;//canvas width
+cws =0;//canvas width scale;
+ch =0;//canvas height
+chs =0;//canvas height scale;
+xoffset =0;//for tile resizing
+yoffset =0;
+var blank = new Image(); // Create new img element
+var scale=0.6;//canvas scale % of vw
+blank.src = "../images/blankTileClean.png"; 
 
 // ****************************************
 //function delcaration
@@ -109,6 +118,34 @@ function placeBlock(xcoor,ycoor,zcoor, len1, len2){
     }
 }
 
+function cnvScale(){
+    xoffset=0;
+    yoffset=0;
+    //scale canvas with window
+    cnv.width=window.innerWidth*scale;//this needs updated on every draw frame
+    cnv.height=window.innerWidth*scale*0.6;
+    //fetch accurate pixel size
+    cw=cnv.width;
+    ch=cnv.height;
+    //calculate pixel scale
+    cws=cw/((rowLen/2)+2);
+    chs=ch/((rowNum/2)+2);
+    //normalize based on the smaller of the two
+    if(cws<=chs){
+        chs=cws*4/3;
+        console.log(ch/chs, (rowNum/2));
+        yoffset=((ch/chs-(rowNum/2))/2)*chs;
+    }
+    else if(chs<cws){
+        cws=chs*3/4;
+        console.log(cw/cws, (rowLen/2));
+        xoffset=((cw/cws-(rowLen/2))/2)*cws;
+    }
+    else{
+        console.log("ERROR: Something has gone horrible wrong while setting the scale for the tiles");
+    }
+}
+
 //For the tile array, I need
 //An array, with arrays = layers, with arrays = col, with arrays = row
 //change this to array=layers, array=rows, elements= columns
@@ -188,8 +225,10 @@ if(true){//turtle tester
     placeTile(7.5,4.5,5);
 }
 
-//color stylization
+
+cnvScale();
 // ************************************************
+//color stylization
 if(true){
     cnv.style.backgroundColor= 'green';
     cnv.style.borderColor='darkred';
@@ -197,14 +236,19 @@ if(true){
 }
 
 // ************************************************
-//edit the canvas to be the correct size
-var scale=0.6;
-cnv.width=window.innerWidth*scale;
-cnv.height=window.innerWidth*scale*0.6;
+//lets plot one tile on the canvas
 
-//change color
-//background?
+var ctx = cnv.getContext("2d");
+var img = document.getElementById("blank");
+//ctx.drawImage(img,0,0,150,180);
 
+// ************************************************
+//console.log(img,xoffset+(2*cws),yoffset+chs,cws,chs);
+//ctx.drawImage(img,(2*cws),chs,cws,chs);
+ctx.drawImage(img,xoffset+(2*cws),yoffset+chs,cws,chs);
+
+// *************************************************
+//I need to read the marray and plot tiles for each ?/tile id
 
 //testing
 
