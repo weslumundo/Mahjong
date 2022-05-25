@@ -9,6 +9,7 @@ var rowLen=0;//x
 var rowNum=0;//y
 var height=0;//z
 var cnv=document.getElementById("myCanvas");
+var ctx = cnv.getContext("2d");
 cw =0;//canvas width
 cws =0;//canvas width scale;
 ch =0;//canvas height
@@ -20,6 +21,11 @@ var scale=0.6;//canvas scale % of vw
 blank.src = "../images/blankTileClean.png";
 var imageUrlArray = []; 
 var imageArray = [];
+var tileHelperX = 0;
+var tileHelperY = 0;
+var tileHelperZ = 0;
+var xoffset = 0;
+var yoffset = 0;
 
 // ****************************************
 //function delcaration
@@ -49,6 +55,10 @@ function halfValid(xcoor, ycoor, zcoor, errOut=false){
 //fetches the value of marray in half units
 function getVal(xcoor, ycoor, zcoor){
     return marray[zcoor][ycoor][xcoor];
+}
+
+function getValFull(xcoor,ycoor,zcoor){
+    return marray[zcoor-1][(ycoor-1)*2][(xcoor-1)*2];
 }
 
 //sets value val to marray in half units
@@ -130,22 +140,23 @@ function cnvScale(){
     cw=cnv.width;
     ch=cnv.height;
     //calculate pixel scale
-    cws=cw/((rowLen/2)+2);
-    chs=ch/((rowNum/2)+2);
+    cws=cw/((rowLen/2)+3);
+    chs=ch/((rowNum/2)+3);
     //normalize based on the smaller of the two
     if(cws<=chs){
         chs=cws*4/3;
-        console.log(ch/chs, (rowNum/2));
+        //console.log(ch/chs, (rowNum/2));
         yoffset=((ch/chs-(rowNum/2))/2)*chs;
     }
     else if(chs<cws){
         cws=chs*3/4;
-        console.log(cw/cws, (rowLen/2));
+        //console.log(cw/cws, (rowLen/2));
         xoffset=((cw/cws-(rowLen/2))/2)*cws;
     }
     else{
         console.log("ERROR: Something has gone horrible wrong while setting the scale for the tiles");
     }
+    console.log("offset", xoffset,yoffset);
 }
 
 //https://stackoverflow.com/questions/37854355/wait-for-image-loading-to-complete-in-javascript
@@ -176,6 +187,38 @@ async function loadImages(imageUrlArray) {
     await Promise.all(promiseArray); // wait for all the images to be loaded
     console.log("all images loaded");
     return imageArray;
+}
+
+//takes input in full units and draws a tile onto the canvas
+function drawTile(xcoor,ycoor,zcoor){
+    //need to add in z
+    console.log(xoffset,yoffset);
+    ctx.drawImage(imageArray[0],xoffset+(xcoor*cws),yoffset+(ycoor*chs),cws,chs);
+}
+
+function findTileHelper(curr, x){
+    if(getValFull((x/2)+1,tileHelperY,tileHelperZ)=='?'){
+        console.log("found a tile at "+((x/2)+1));
+        drawTile((x/2)+1, tileHelperY, tileHelperZ); 
+    }
+    //console.log("found a tile at "+((x/2)+1));
+    
+}
+
+function findTile(ycoor, zcoor){
+    tileHelperY = (ycoor/2)+1;
+    tileHelperZ = zcoor+1;
+    marray[zcoor][ycoor].findIndex(findTileHelper);
+}
+
+//z in full others in half
+function findTileAll(){
+    cnvScale();
+    console.log(xoffset,yoffset);
+    //add in for loop for all z layers
+    for(let j = 0; j<rowNum; j++){
+        findTile(j,0);
+    }
 }
 
 function buildArray(){
@@ -262,12 +305,52 @@ function buildArray(){
 async function setStyle(){
     // ************************************************
     //color stylization
-    if(true){
-        cnv.style.backgroundColor= 'green';
-        cnv.style.borderColor='darkred';
-        document.body.style.backgroundColor='burlywood';
+    // ****************
+    //background color
+    if (true){
+        var bodyBGC = 'burlywood';
     }
-
+    document.body.style.backgroundColor=bodyBGC;
+    // ****************
+    //board style
+    if(true){
+        var cnvBGC = 'green';
+        var cnvBC = 'darkred';
+    }
+    cnv.style.backgroundColor=cnvBGC;
+    cnv.style.borderColor=cnvBC;
+    // ****************
+    //button style
+    if(true){
+        var buttonBGC='green';
+        var buttonC='ivory';
+        var buttonBC='darkred';
+    }
+    let butList = document.querySelectorAll("button");
+    for(let myBut of butList){
+        myBut.style.backgroundColor=buttonBGC;
+        myBut.style.color=buttonC;
+        myBut.style.borderColor=buttonBC;
+    }
+    // ****************
+    //button hover
+    if(true){
+        var buttonHBGC = 'lawngreen';
+        var buttonHC = 'black';
+        var buttonHBC = 'darkgreen';
+    }
+    for(let myBut of butList){
+        myBut.onmouseover = () => {
+            myBut.style.backgroundColor=buttonHBGC;
+            myBut.style.color=buttonHC;
+            myBut.style.borderColor=buttonHBC;
+        }
+        myBut.onmouseout = () => {
+            myBut.style.backgroundColor=buttonBGC;
+            myBut.style.color=buttonC;
+            myBut.style.borderColor=buttonBC;
+        }
+    }
     // ************************************************
     //tile stylization
     if(true){
@@ -290,35 +373,38 @@ async function main(){
     buildArray();
     await setStyle();
     cnvScale();
-    
+    //drawTile(2,1,1);
     // ************************************************
     //lets plot one tile on the canvas
-    var ctx = cnv.getContext("2d");
-    var img = imageArray[0];
+    //let img = imageArray[0];
     //console.log(img);
     //ctx.drawImage(img,0,0,150,180);
-    ctx.drawImage(img,xoffset+(2*cws),yoffset+chs,cws,chs);
+    //ctx.drawImage(img,xoffset+(2*cws),yoffset+chs,cws,chs);
+    findTileAll();
+    //for()
 }
 
+
+// *****************************************
 //testing
 
-/*
-//lets output marray onto a blank html page
-let myDiv = document.createElement("div");
-let myP = document.createElement("p");
-let tempString = ""
+function print(){
+    //lets output marray onto a blank html page
+    let myDiv = document.createElement("div");
+    let myP = document.createElement("p");
+    let tempString = ""
 
-for(let i=0; i<height; i++){
-    for(let j=0;j<rowNum;j++){
-        tempString = tempString+marray[i][j].toString();
-        tempString = tempString+"\n";
+    for(let i=0; i<height; i++){
+        for(let j=0;j<rowNum;j++){
+            tempString = tempString+marray[i][j].toString();
+            tempString = tempString+"\n";
+        }
+        tempString = tempString + "\n\n";
     }
-    tempString = tempString + "\n\n";
-}
 
-let myTxt = document.createTextNode(tempString);
-myP.appendChild(myTxt);
-myDiv.appendChild(myP);
-document.body.appendChild(myDiv);
-document.body.style = "white-space: pre;";
-*/
+    let myTxt = document.createTextNode(tempString);
+    myP.appendChild(myTxt);
+    myDiv.appendChild(myP);
+    document.body.appendChild(myDiv);
+    document.body.style = "white-space: pre;";
+}

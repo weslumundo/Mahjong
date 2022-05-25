@@ -59,10 +59,11 @@ Things to fix
 
 -game
 --test readout needs to be spaced properly
---buttons need hooked up to style system
---need to find a way to source canvas images
---The canvas scale prioritizer isn't choosing the correct scale
---Single tile on canvas online, likely because of image loading problems
+RESOLVED buttons need hooked up to style system
+RESOLVED need to find a way to source canvas images
+RESOLVED The canvas scale prioritizer isn't choosing the correct scale
+    Rez: not properly converting from fu to hu
+RESOLVED Single tile on canvas online, likely because of image loading problems
 
 Stretch goal
 --dev page for board building

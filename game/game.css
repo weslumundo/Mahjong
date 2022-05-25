@@ -44,10 +44,12 @@ button{
     color: ivory;
     background-color: green;
     border: solid darkred;
+    border-width: 0.3vw;
 }
 
 button:hover{
     color: black;
     background-color: lawngreen;
-    border: solid darkgreen;    
+    border: solid darkgreen;
+    border-width: 0.3vw;    
 }
