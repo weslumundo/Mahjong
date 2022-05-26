@@ -26,6 +26,7 @@ var tileHelperY = 0;
 var tileHelperZ = 0;
 var xoffset = 0;
 var yoffset = 0;
+var buildStack = [];
 
 // ****************************************
 //function delcaration
@@ -139,24 +140,36 @@ function cnvScale(){
     //fetch accurate pixel size
     cw=cnv.width;
     ch=cnv.height;
+    //console.log("canvas size", cw, ch);
+    //console.log("array size", rowLen, rowNum);
+    //console.log("needed tiles",((((rowLen+1)/2)+2)),((((rowNum+1)/2)+2)))
+    //console.log("pixel scale",(cw/(((rowLen+1)/2)+2)),(ch/(((rowNum+1)/2)+2)))
     //calculate pixel scale
-    cws=cw/((rowLen/2)+3);
-    chs=ch/((rowNum/2)+3);
+    cws=cw/(((rowLen+1)/2)+2);
+    chs=ch/(((rowNum+1)/2)+2);
     //normalize based on the smaller of the two
-    if(cws<=chs){
+    //I need to normalize based on which scale gives a >/< realitive tile area
+    //calculate realtive tile areas.
+    //for cws
+    //cws is the ideal width, tiles are a 4:3 ratio
+    cwa=cws*cws*4/3;
+    cha=chs*chs*3/4;
+    //console.log("tile areas", cwa, cha);
+    if(cwa<=cha){
         chs=cws*4/3;
-        //console.log(ch/chs, (rowNum/2));
-        yoffset=((ch/chs-(rowNum/2))/2)*chs;
+        //console.log("yoffset set",ch/chs, (rowNum/2));
+        yoffset=((ch/chs-((rowNum+1)/2+2))/2)*chs;
     }
-    else if(chs<cws){
+    else if(cha<cwa){
         cws=chs*3/4;
         //console.log(cw/cws, (rowLen/2));
-        xoffset=((cw/cws-(rowLen/2))/2)*cws;
+        //console.log(cw/cws);
+        xoffset=((cw/cws-((rowLen+1)/2+2))/2)*cws;
     }
     else{
         console.log("ERROR: Something has gone horrible wrong while setting the scale for the tiles");
     }
-    console.log("offset", xoffset,yoffset);
+    //console.log("offset", xoffset,yoffset);
 }
 
 //https://stackoverflow.com/questions/37854355/wait-for-image-loading-to-complete-in-javascript
@@ -189,37 +202,73 @@ async function loadImages(imageUrlArray) {
     return imageArray;
 }
 
+/*
+//full units
+function drawTileShadow(xcoor,ycoor,zcoor){
+    let zxscale = -0.03*zcoor;
+    let zyscale = -0.04*zcoor;
+    let shadowx = -0.13;
+    let shadowy = -0.14;
+    let x = xoffset+(xcoor*cws)+cws*zxscale+shadowx*cws;
+    let y = yoffset+(ycoor*chs)+chs*zyscale+shadowy*chs;
+    ctx.drawImage(imageArray[1],x,y,cws,chs);
+}
+
 //takes input in full units and draws a tile onto the canvas
 function drawTile(xcoor,ycoor,zcoor){
     //need to add in z
-    console.log(xoffset,yoffset);
-    ctx.drawImage(imageArray[0],xoffset+(xcoor*cws),yoffset+(ycoor*chs),cws,chs);
+    //console.log(xoffset,yoffset);
+    //console.log(xoffset/cws, yoffset/chs);
+    let zxscale = -0.03*zcoor;
+    let zyscale = -0.04*zcoor; 
+    let x = xoffset+(xcoor*cws)+cws*zxscale;
+    let y = yoffset+(ycoor*chs)+chs*zyscale;
+    ctx.drawImage(imageArray[0],x,y,cws,chs);
 }
 
 function findTileHelper(curr, x){
+    console.log("test");
     if(getValFull((x/2)+1,tileHelperY,tileHelperZ)=='?'){
         console.log("found a tile at "+((x/2)+1));
         drawTile((x/2)+1, tileHelperY, tileHelperZ); 
     }
-    //console.log("found a tile at "+((x/2)+1));
-    
+    else{console.log("found something else: ",getValFull((x/2)+1,tileHelperY,tileHelperZ))}
+    //console.log("found a tile at "+((x/2)+1));   
 }
 
-function findTile(ycoor, zcoor){
+function findTileHelperShadow(curr, x){
+    if(getValFull((x/2)+1,tileHelperY,tileHelperZ)=='?'){
+        //console.log("found a tile at "+((x/2)+1));
+        drawTileShadow((x/2)+1, tileHelperY, tileHelperZ); 
+    }
+    //console.log("found a tile at "+((x/2)+1));   
+}
+
+async function findTile(ycoor, zcoor){
     tileHelperY = (ycoor/2)+1;
     tileHelperZ = zcoor+1;
-    marray[zcoor][ycoor].findIndex(findTileHelper);
+    await marray[zcoor][ycoor].findIndex(findTileHelperShadow);
+    await marray[zcoor][ycoor].findIndex(findTileHelper);
 }
 
-//z in full others in half
+//units in half
 function findTileAll(){
-    cnvScale();
-    console.log(xoffset,yoffset);
+    //console.log(xoffset,yoffset);
     //add in for loop for all z layers
     for(let j = 0; j<rowNum; j++){
         findTile(j,0);
     }
 }
+
+//units in half
+function findTileAll2(){
+    //console.log(xoffset,yoffset);
+    //add in for loop for all z layers
+    for(let j = 0; j<rowNum; j++){
+        findTile(j,1);
+    }
+}
+*/
 
 function buildArray(){
     //For the tile array, I need
@@ -353,13 +402,114 @@ async function setStyle(){
     }
     // ************************************************
     //tile stylization
+    //default tile
     if(true){
         imageUrlArray.push("../images/blankTileClean.png");
         //console.log("start");
         //console.log("beginning test");
-        imageArray = await loadImages(imageUrlArray);
         //console.log("ending test");
     }
+
+    //tile shadow
+    if(true){
+        imageUrlArray.push("../images/tileShadow25.png");
+    }
+    imageArray = await loadImages(imageUrlArray);
+}
+
+async function fillBuild(){
+    //let height = 2;
+    for(let i = 0; i<height; i++){
+        for(let j = 0; j<rowNum; j++){
+            tileHelperY = (j/2)+1;
+            tileHelperZ = i+1;
+            await marray[i][j].findIndex(tileBuilder);  
+        }
+    }    
+}
+
+function tileBuilder(curr, x){
+    console.log("looking at an marray location");
+    if(getValFull((x/2)+1,tileHelperY,tileHelperZ)=='?'){
+        //console.log("found a tile at "+((x/2)+1));
+        buildStack.push(createObj((x/2)+1, tileHelperY, tileHelperZ));
+    }
+}
+
+//full units
+function createObj(xcoor, ycoor, zcoor,imgId = 0, mlay=zcoor){
+    let myObj = {
+        x: xcoor,
+        y: ycoor,
+        z: zcoor,
+        im: imageArray[imgId],
+        vis: true,
+        act: false,
+        lay: mlay,
+        drawMyBlank: function() {
+            drawBlank(this.x, this.y, this.z, this.act);
+            //drawSymbol(this.x, this.y, this.z, this.act, this.im);
+        },
+        drawMyShadow: function() {
+            //console.log("drawing tile");
+            drawShadow(this.x, this.y, this.z, this.act);
+        },
+        drawMySymbol: function() {
+            drawSymbol(this.x, this.y, this.z, this.act, this.im);
+        }
+    };
+    return myObj;
+}
+
+function drawBlank(xcoor, ycoor, zcoor, act){
+    let zxscale = -0.03*zcoor;
+    let zyscale = -0.04*zcoor; 
+    let x = xoffset+(xcoor*cws)+cws*zxscale;
+    let y = yoffset+(ycoor*chs)+chs*zyscale;
+    ctx.drawImage(imageArray[0],x,y,cws,chs);
+}
+
+function drawShadow(xcoor, ycoor, zcoor, act){
+    let zscale = -0.03;
+    let zxscale = zscale*zcoor;
+    let zyscale = zscale*zcoor*4/3;
+    let shadowx = -0.1;
+    let shadowy = shadowx*4/3;
+    let x = xoffset+(xcoor*cws)+cws*zxscale+shadowx*cws;
+    let y = yoffset+(ycoor*chs)+chs*zyscale+shadowy*chs;
+    ctx.drawImage(imageArray[1],x,y,cws,chs);
+}
+
+function drawSymbol(xcoor, ycoor, zcoor, act, im){
+
+}
+
+function drawAll(){
+    //console
+    let tileCount=0;
+    let layer=0;
+    while(tileCount<buildStack.length){
+        for(let i=0; i<buildStack.length; i++){
+            if(buildStack[i].lay==layer){
+                tileCount++;
+                buildStack[i].drawMyShadow();
+            }
+        }
+        for(let i=0; i<buildStack.length; i++){
+            if(buildStack[i].lay==layer){
+                buildStack[i].drawMyBlank();
+            }
+        }
+        for(let i=0; i<buildStack.length; i++){
+            if(buildStack[i].lay==layer){
+                buildStack[i].drawMySymbol();
+            }
+        }
+        layer++;
+    }
+    tileCount=0;
+    layer=0;
+
 }
 
 // *************************************************
@@ -380,8 +530,13 @@ async function main(){
     //console.log(img);
     //ctx.drawImage(img,0,0,150,180);
     //ctx.drawImage(img,xoffset+(2*cws),yoffset+chs,cws,chs);
-    findTileAll();
+    //findTileAll();
+    //findTileAll2();
+    //cnvGrid();
     //for()
+    //print();
+    await fillBuild();
+    drawAll();
 }
 
 
@@ -407,4 +562,11 @@ function print(){
     myDiv.appendChild(myP);
     document.body.appendChild(myDiv);
     document.body.style = "white-space: pre;";
+}
+
+function cnvGrid(){
+    ctx.beginPath(); 
+    ctx.moveTo(cnv.width/2,0);
+    ctx.lineTo(cnv.width/2,cnv.height);
+    ctx.stroke();
 }
