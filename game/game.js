@@ -475,7 +475,7 @@ function createObj(xcoor, ycoor, zcoor,imgId = 0, mlay=zcoor){
 }
 
 function drawBlank(xcoor, ycoor, zcoor, act){
-    let zscale = -0.04;
+    let zscale = -0.0425;
     let zxscale = zscale*zcoor;
     let zyscale = zscale*zcoor*4/3; 
     let x = xoffset+(xcoor*cws)+cws*zxscale;
@@ -484,7 +484,7 @@ function drawBlank(xcoor, ycoor, zcoor, act){
 }
 
 function drawShadow(xcoor, ycoor, zcoor, act){
-    let zscale = -0.04;
+    let zscale = -0.0425;
     let zxscale = zscale*zcoor;
     let zyscale = zscale*zcoor*4/3;
     let shadowx = -0.1;
