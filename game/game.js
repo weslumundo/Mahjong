@@ -295,11 +295,20 @@ function buildArray(){
     //I think I can get away with just using 0.5 units for horizontal and vertical
     //so 5x29x17
     //size for x and y = width*2-1 in most cases, I guess it doesnt matter and we just need a case by case basis
-    if(true)//condition for turtle
+    let turtle=false;
+    let one=!turtle;
+
+    if(turtle)//condition for turtle
     {
        height=5;
        rowNum=15;
        rowLen=29; 
+    }
+
+    if(one){
+        height=1;
+        rowNum=1;
+        rowLen=1;
     }
 
     // ********************************************
@@ -317,7 +326,7 @@ function buildArray(){
 
     // *********************************************
     //fill chart with ? and x denoting tiles and invalid tile placements(the half space between tiles)
-    if(true){//turtle tester
+    if(turtle){//turtle tester
         //this is hell, remember that you are smarter than this
         /*
         marray[0][0]=[0,'x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x','?','x',0,0,0,0];
@@ -348,6 +357,10 @@ function buildArray(){
         placeBlock(6,3,3,4,4);
         placeBlock(7,4,4,2,2);
         placeTile(7.5,4.5,5);
+    }
+
+    if(one){
+        placeTile(1,1,1);
     }
 }
 
@@ -404,7 +417,7 @@ async function setStyle(){
     //tile stylization
     //default tile
     if(true){
-        imageUrlArray.push("../images/blankTileClean.png");
+        imageUrlArray.push("../images/blankTileCleanC1.png");
         //console.log("start");
         //console.log("beginning test");
         //console.log("ending test");
@@ -462,15 +475,16 @@ function createObj(xcoor, ycoor, zcoor,imgId = 0, mlay=zcoor){
 }
 
 function drawBlank(xcoor, ycoor, zcoor, act){
-    let zxscale = -0.03*zcoor;
-    let zyscale = -0.04*zcoor; 
+    let zscale = -0.02;
+    let zxscale = zscale*zcoor;
+    let zyscale = zscale*zcoor*4/3; 
     let x = xoffset+(xcoor*cws)+cws*zxscale;
     let y = yoffset+(ycoor*chs)+chs*zyscale;
     ctx.drawImage(imageArray[0],x,y,cws,chs);
 }
 
 function drawShadow(xcoor, ycoor, zcoor, act){
-    let zscale = -0.03;
+    let zscale = -0.02;
     let zxscale = zscale*zcoor;
     let zyscale = zscale*zcoor*4/3;
     let shadowx = -0.1;
