@@ -417,7 +417,7 @@ async function setStyle(){
     //tile stylization
     //default tile
     if(true){
-        imageUrlArray.push("../images/blankTileCleanC3.png");
+        imageUrlArray.push("../images/blankTileCleanC2.png");
         //console.log("start");
         //console.log("beginning test");
         //console.log("ending test");
@@ -475,7 +475,7 @@ function createObj(xcoor, ycoor, zcoor,imgId = 0, mlay=zcoor){
 }
 
 function drawBlank(xcoor, ycoor, zcoor, act){
-    let zscale = -0.02;
+    let zscale = -0.04;
     let zxscale = zscale*zcoor;
     let zyscale = zscale*zcoor*4/3; 
     let x = xoffset+(xcoor*cws)+cws*zxscale;
@@ -484,12 +484,12 @@ function drawBlank(xcoor, ycoor, zcoor, act){
 }
 
 function drawShadow(xcoor, ycoor, zcoor, act){
-    let zscale = -0.02;
+    let zscale = -0.04;
     let zxscale = zscale*zcoor;
     let zyscale = zscale*zcoor*4/3;
     let shadowx = -0.1;
     let shadowy = shadowx*4/3;
-    let sscale = 13.5;
+    let sscale = 10;
     let x = xoffset+(xcoor*cws)+cws*zxscale+shadowx*cws;
     let y = yoffset+(ycoor*chs)+chs*zyscale+shadowy*chs;
     ctx.drawImage(imageArray[1],x,y,cws*(1+(sscale/100)),chs*(1+(sscale/100)));
