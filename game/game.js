@@ -295,7 +295,7 @@ function buildArray(){
     //I think I can get away with just using 0.5 units for horizontal and vertical
     //so 5x29x17
     //size for x and y = width*2-1 in most cases, I guess it doesnt matter and we just need a case by case basis
-    let turtle=false;
+    let turtle=true;
     let one=!turtle;
 
     if(turtle)//condition for turtle
@@ -417,7 +417,7 @@ async function setStyle(){
     //tile stylization
     //default tile
     if(true){
-        imageUrlArray.push("../images/blankTileCleanC1.png");
+        imageUrlArray.push("../images/blankTileCleanC3.png");
         //console.log("start");
         //console.log("beginning test");
         //console.log("ending test");
