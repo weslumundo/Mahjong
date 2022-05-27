@@ -425,7 +425,7 @@ async function setStyle(){
 
     //tile shadow
     if(true){
-        imageUrlArray.push("../images/tileShadow25.png");
+        imageUrlArray.push("../images/tileShadow25C3.png");
     }
     imageArray = await loadImages(imageUrlArray);
 }
@@ -489,9 +489,10 @@ function drawShadow(xcoor, ycoor, zcoor, act){
     let zyscale = zscale*zcoor*4/3;
     let shadowx = -0.1;
     let shadowy = shadowx*4/3;
+    let sscale = 13.5;
     let x = xoffset+(xcoor*cws)+cws*zxscale+shadowx*cws;
     let y = yoffset+(ycoor*chs)+chs*zyscale+shadowy*chs;
-    ctx.drawImage(imageArray[1],x,y,cws,chs);
+    ctx.drawImage(imageArray[1],x,y,cws*(1+(sscale/100)),chs*(1+(sscale/100)));
 }
 
 function drawSymbol(xcoor, ycoor, zcoor, act, im){
